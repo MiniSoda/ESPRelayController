@@ -1,5 +1,4 @@
 #include <Arduino.h>
-// #include <AsyncElegantOTA.h>
 #include <ArduinoJson.h>
 #include <Esp.h>
 #include <ESP8266WiFi.h>
@@ -36,11 +35,6 @@ bool portalRunning      = false;
 
 const std::string LED_WIFI_NAME = "wifi";
 const std::string LED_ACTIVE_NAME = "active";
-
-// const char* ssid = "George";
-// const char* password = "zhengjian";
-
-// AsyncWebServer server(80);
 
 struct Button {
   const uint8_t PIN;
@@ -124,7 +118,6 @@ void reconnect() {
   }
 }
 
-
 void IRAM_ATTR buttonInput() {
   button_time = millis();
   if (button_time - last_button_time > 250)
@@ -133,12 +126,6 @@ void IRAM_ATTR buttonInput() {
     button1.pressed = true;
     last_button_time = button_time;
   }
-}
-
-void configModeCallback (WiFiManager *myWiFiManager) {
-  Serial.println("Entered config mode");
-  Serial.println(WiFi.softAPIP());
-  Serial.println(myWiFiManager->getConfigPortalSSID());
 }
 
 void RunPortal() {
@@ -180,9 +167,9 @@ void setup() {
 }
 
 void loop() {
-  Timer::update();
   RunPortal();
   client.loop();
+  Timer::update();
 
   if (!client.connected()) {
     reconnect();
